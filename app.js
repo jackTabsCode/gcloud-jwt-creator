@@ -6,12 +6,18 @@ const jwt = require("jsonwebtoken");
 const app = express();
 
 const generateJWT = () => {
-  return jwt.sign({}, process.env.GCP_PRIVATE_KEY, {
-    algorithm: "RS256",
-    audience: "https://www.googleapis.com/oauth2/v4/token",
-    issuer: process.env.GCP_EMAIL,
-    expiresIn: "1h"
-  });
+  return jwt.sign(
+    {
+      scope: "https://www.googleapis.com/auth/datastore"
+    },
+    process.env.GCP_PRIVATE_KEY,
+    {
+      algorithm: "RS256",
+      audience: "https://www.googleapis.com/oauth2/v4/token",
+      issuer: process.env.GCP_EMAIL,
+      expiresIn: "1h"
+    }
+  );
 };
 
 app.get("/jwt", (req, res) => {
